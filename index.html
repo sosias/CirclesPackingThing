@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sketch</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/pico.css">
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+    <script src="circleS.js"></script>
+    <script src="sketch.js"></script>
+    <main style="position: absolute; padding: 0; margin: 0;">
+      <div style="position: absolute;">
+        <div id="ui" style="position: relative; padding: 10px;">
+          <button onClick="runDrawFunc()">generate</button>
+          <label>zoom</label>
+          <input type="range" min="1" max="12" value="1" id="nRadius" oninput="changeRelativeSize(this.value)">
+          <label>circle size</label>
+          <input type="range" min="1" max="12" value="1" id="cRadius" oninput="changeSmallCircleSize(this.value)">
+        </div>
+      </div>
+      <div id="infos" style="position: absolute; bottom: 0px; padding: 10px;">
+        <span>#</span><span id="circlesQty"></span>
+        <span style="padding-right: 100px;"></span>
+        <span style="padding-right: 5px;">Ø</span><span id="circlesSize"></span><span>cm</span>
+      </div>
+    </main>
+  </body>
+</html>
