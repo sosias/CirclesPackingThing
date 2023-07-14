@@ -22,9 +22,9 @@
         <div id="ui" style="display: flex; position: relative; padding: 10px; justify-content: space-between;">
           <div id="palette"></div>
           <div>
-            <button onClick="runDrawFunc()">generate</button>
+            <button onClick="runGenerateDrawFunc()">generate</button>
             <label>zoom</label>
-            <input type="range" min="1" max="12" value="1" id="nRadius" oninput="changeRelativeSize(this.value)">
+            <input type="range" min="1" max="12" value="1" id="nZoom" oninput="changeZoomFactor(this.value)">
             <label>circle size</label>
             <input type="range" min="2" max="12" value="2" id="cRadius" oninput="changeSmallCircleSize(this.value)">
             <div style="margin-bottom: 10px;">

@@ -21,6 +21,7 @@ class CircleS {
     }
     
     show() {
+      noStroke();
       fill(this.r, this.g, this.b);
       circle(this.x, this.y, this.radius);
     }
