@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Sketch</title>
+    <title>Circle Packing Things</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/pico.css">
@@ -27,10 +27,12 @@
             <input type="range" min="1" max="12" value="1" id="nRadius" oninput="changeRelativeSize(this.value)">
             <label>circle size</label>
             <input type="range" min="2" max="12" value="2" id="cRadius" oninput="changeSmallCircleSize(this.value)">
+            <div style="margin-bottom: 10px;">
+              <span>overlapping</span>
+              <input type="checkbox" checked="true" id="overlapping" onchange="changeOverlappingOption(this.checked)">
+            </div>
             <label style="display: none;">circle margin</label>
             <input style="display: none;" type="range" min="0" max="12" value="2" id="cMargin" oninput="changeCircleMargin(this.value)">
-            <label>overlapping</label>
-            <input type="checkbox" checked="true" id="overlapping" onchange="changeOverlappingOption(this.checked)">
             <label style="display: block;">randomness</label>
             <input type="range" min="0" max="12" value="3" id="cRand" oninput="changeGridRandomness(this.value)">
           </div>
