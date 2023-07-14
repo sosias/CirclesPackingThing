@@ -11,6 +11,12 @@ let overlappingOption = true;
 
 let circles = []
 
+const State = {
+  CirclePacking: "CirclePacking",
+  CircleGrid: "CircleGrid"
+}
+let currentState = State.CircleGrid;
+
 let colorPalette = [
   ["#FFFFFF"],
   ["#FD2E5A","#FDE503","#1E99D2","#705791","#FE3509","#FD6E89","#7FB03B"],
@@ -72,6 +78,7 @@ function changeGridRandomness(rand){
 
 function changeOverlappingOption(overlapping){
   overlappingOption = overlapping;
+  (overlapping)? currentState = State.CircleGrid : currentState = State.CirclePacking;
   runDrawFunc();
   changeUIState();
 }
@@ -90,15 +97,15 @@ function runDrawFunc(){
   bigCircleCenterX = width/2;
   bigCircleCenterY = height/2;
 
-  if(overlappingOption){
-    drawCirclesInGrid();
-  } else {
-    drawCirclePacking();
+  if(currentState == State.CircleGrid){
+    generateAndDrawCirclesInGrid();
+  } else if(currentState == State.CirclePacking){
+    generateAndDrawCirclePacking();
   }
   updateInfos();
 }
 
-function drawCirclesInGrid(){
+function generateAndDrawCirclesInGrid(){
   circles = [];
   background(0);
 
@@ -122,7 +129,7 @@ function drawCirclesInGrid(){
   }
 }
 
-function drawCirclePacking(){
+function generateAndDrawCirclePacking(){
   circles = [];
   background(0);
   let relBigCircleSize = bigCircleSize * relativeSize;
@@ -194,13 +201,13 @@ function createUIPalette(){
 }
 
 function changeUIState(){
-  if(overlappingOption){
+  if(currentState == State.CircleGrid){
     document.querySelector("#cMargin").previousElementSibling.style.display = 'none';
     document.querySelector("#cMargin").style.display = 'none';
 
     document.querySelector("#cRand").previousElementSibling.style.display = 'block';
     document.querySelector("#cRand").style.display = 'block';
-  } else {
+  } else if(currentState == State.CirclePacking) {
     document.querySelector("#cMargin").previousElementSibling.style.display = 'block';
     document.querySelector("#cMargin").style.display = 'block';
 
