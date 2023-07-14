@@ -9,8 +9,6 @@ const initVar = {
   bigCircleSize: 200,
 }
 
-//let circles = []
-
 let bigCircle = new BigCircle(0,0,initVar.bigCircleSize, initVar.smallCircleSize);
 
 const State = {

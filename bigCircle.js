@@ -9,22 +9,19 @@ class BigCircle {
       this.randomness = 3;
       this.colorPalette = ["#FFFFFF"];
       this.marginCircleSize = 2;
+      this.isInfoOn = true;
     }
     
     show() {
       this.circles.forEach(element => {
         element.show();
       });
+      (this.isInfoOn)? this.drawInfo() : null;
     }
 
     generateCirclesInGrid(drawAlso = true){
       this.circles = [];
-      //background(backgroundColor);
-    
-      //circle(0,0,bigCircleSize);
-    
-      //noStroke();
-      //fill(backgroundColor);
+
       for(let currentX = -this.bigCircleSize/2; currentX<this.bigCircleSize/2; currentX = currentX+this.smallCircleSize) {
         for(let currentY = -this.bigCircleSize/2; currentY<this.bigCircleSize/2; currentY = currentY+this.smallCircleSize) {
           if(dist(0,0,currentX,currentY) < this.bigCircleSize/2){
@@ -38,6 +35,8 @@ class BigCircle {
           }
         }
       }
+
+      (this.isInfoOn)? this.drawInfo() : null;
     }
 
     generateCirclePacking(drawAlso = true){
@@ -62,6 +61,8 @@ class BigCircle {
           currentTimeFailed--;
         }
       }
+
+      (this.isInfoOn)? this.drawInfo() : null;
     }
 
     #isEnoughSpaceInCircles(point){
@@ -98,6 +99,18 @@ class BigCircle {
 
     getCirclesQty(){
       return this.circles.length;
+    }
+
+    drawInfo(){
+      let margin = 20;
+      push();
+      fill(125);
+      stroke(125);
+      strokeWeight(1);
+      line(-this.bigCircleSize/2, this.bigCircleSize/2 + margin, this.bigCircleSize/2, this.bigCircleSize/2 + margin);
+      noStroke();
+      text(this.bigCircleSize + "cm", 0 - 15, this.bigCircleSize/2 + margin + 4, 100,100);
+      pop();
     }
 
   }
