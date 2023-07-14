@@ -99,7 +99,7 @@ function runDrawFunc(){
 }
 
 function drawCirclesInGrid(){
-  circleQty = 0;
+  circles = [];
   background(0);
 
   //circle(bigCircleCenterX,bigCircleCenterY,bigCircleSize);
@@ -116,7 +116,7 @@ function drawCirclesInGrid(){
         let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
         currentCircle.color(color.levels[0],color.levels[1],color.levels[2]);
         currentCircle.show();
-        circleQty++;
+        circles.push(currentCircle);
       }
     }
   }
@@ -124,12 +124,12 @@ function drawCirclesInGrid(){
 
 function drawCirclePacking(){
   circles = [];
-  circleQty = 0;
   background(0);
   let relBigCircleSize = bigCircleSize * relativeSize;
   let relSmallCircleSize = smallCircleSize * relativeSize;
   let relRandomness = randomness * relativeSize;
   noStroke();
+
   fill(0);
 
   let failTimesLimit = 30;
@@ -142,7 +142,6 @@ function drawCirclePacking(){
     if(circles.length == 0 || isEnoughSpaceInCircles(randomPoint)){
       let currentCircle = new CircleS(randomPoint.x,randomPoint.y,relSmallCircleSize);
       currentTimeFailed = failTimesLimit;
-      circleQty++;
       let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
       currentCircle.color(color.levels[0],color.levels[1],color.levels[2]);
       currentCircle.show();
@@ -179,7 +178,7 @@ function getRandomPointInsideCircle(){
 }
 
 function updateInfos(){
-  document.querySelector("#circlesQty").innerHTML = circleQty;
+  document.querySelector("#circlesQty").innerHTML = circles.length;
   document.querySelector("#circlesSize").innerHTML = smallCircleSize;
 }
 
