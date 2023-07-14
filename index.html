@@ -36,6 +36,10 @@
             <input style="display: none;" type="range" min="0" max="12" value="2" id="cMargin" oninput="changeCircleMargin(this.value)">
             <label style="display: block;">randomness</label>
             <input type="range" min="0" max="12" value="3" id="cRand" oninput="changeGridRandomness(this.value)">
+            <div style="margin-bottom: 10px;">
+              <span>animate</span>
+              <input type="checkbox" id="overlapping" onchange="playStopAnimation(this.checked)">
+            </div>
           </div>
         </div>
       </div>

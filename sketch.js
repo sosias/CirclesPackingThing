@@ -3,6 +3,7 @@ let zoomFactor = 1;
 let currentPalette = 0;
 let overlappingOption = true;
 let backgroundColor = 0;
+let animate = false;
 
 const initVar = {
   smallCircleSize: 2,
@@ -50,7 +51,15 @@ function setup() {
 }
 
 function draw() {
-
+  if(animate){
+    background(backgroundColor);
+    bigCircle.move();
+    push();
+      translate(width/2,height/2);
+      scale(zoomFactor);
+      bigCircle.show();
+    pop();
+  }
 }
 
 function changeZoomFactor(size){
@@ -84,6 +93,10 @@ function selectPalette(paletteNr){
   currentPalette = paletteNr;
   bigCircle.changeRandomColorsFromPalette(colorPalette[currentPalette]);
   runDrawFunc();
+}
+
+function playStopAnimation(anim){
+  animate = anim;
 }
 
 function windowResized() {

@@ -101,6 +101,12 @@ class BigCircle {
       return this.circles.length;
     }
 
+    move(){
+      this.circles.forEach(element => {
+        element.move();
+      });
+    }
+
     drawInfo(){
       let margin = 20;
       push();
