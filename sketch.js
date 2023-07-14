@@ -7,6 +7,7 @@ let bigCircleCenterY;
 let relativeSize = 1;
 let randomness = 6;
 let currentPalette = 0;
+let overlappingOption = true;
 
 let circles = []
 
@@ -59,6 +60,17 @@ function changeSmallCircleSize(size){
   runDrawFunc();
 }
 
+function changeCircleMargin(margin){
+  marginCircleSize = margin;
+  runDrawFunc();
+}
+
+function changeOverlappingOption(overlapping){
+  overlappingOption = overlapping;
+  runDrawFunc();
+  changeUIState();
+}
+
 function selectPalette(paletteNr){
   currentPalette = paletteNr;
   runDrawFunc();
@@ -72,8 +84,12 @@ function windowResized() {
 function runDrawFunc(){
   bigCircleCenterX = width/2;
   bigCircleCenterY = height/2;
-  //drawCirclesInGrid();
-  drawCirclePacking();
+
+  if(overlappingOption){
+    drawCirclesInGrid();
+  } else {
+    drawCirclePacking();
+  }
   updateInfos();
 }
 
@@ -111,7 +127,7 @@ function drawCirclePacking(){
   noStroke();
   fill(0);
 
-  let failTimesLimit = 20;
+  let failTimesLimit = 30;
   let currentTimeFailed = failTimesLimit;
   let randomPoint;
   while(currentTimeFailed>0){
@@ -170,5 +186,15 @@ function createUIPalette(){
       singlePalette += '<span style="background: '+colorPalette[i][j]+'; height: 14px; width: 14px;"></span>';
     }
     paletteEl.innerHTML += '<div id="singlePalette" onclick="selectPalette('+i+')" style="display: flex; height: 15px;">'+singlePalette+'</div>';
+  }
+}
+
+function changeUIState(){
+  if(overlappingOption){
+    document.querySelector("#cMargin").previousElementSibling.style.display = 'none';
+    document.querySelector("#cMargin").style.display = 'none';
+  } else {
+    document.querySelector("#cMargin").previousElementSibling.style.display = 'block';
+    document.querySelector("#cMargin").style.display = 'block';
   }
 }

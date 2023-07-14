@@ -18,14 +18,20 @@
     <script src="circleS.js"></script>
     <script src="sketch.js"></script>
     <main style="position: absolute; padding: 0; margin: 0;">
-      <div style="position: absolute;">
-        <div id="ui" style="position: relative; padding: 10px;">
-          <button onClick="runDrawFunc()">generate</button>
-          <label>zoom</label>
-          <input type="range" min="1" max="12" value="1" id="nRadius" oninput="changeRelativeSize(this.value)">
-          <label>circle size</label>
-          <input type="range" min="1" max="12" value="2" id="cRadius" oninput="changeSmallCircleSize(this.value)">
+      <div style="position: absolute; width: 100%;">
+        <div id="ui" style="display: flex; position: relative; padding: 10px; justify-content: space-between;">
           <div id="palette"></div>
+          <div>
+            <button onClick="runDrawFunc()">generate</button>
+            <label>zoom</label>
+            <input type="range" min="1" max="12" value="1" id="nRadius" oninput="changeRelativeSize(this.value)">
+            <label>circle size</label>
+            <input type="range" min="2" max="12" value="2" id="cRadius" oninput="changeSmallCircleSize(this.value)">
+            <label style="display: none;">circle margin</label>
+            <input style="display: none;" type="range" min="0" max="12" value="4" id="cMargin" oninput="changeCircleMargin(this.value)">
+            <label>overlapping</label>
+            <input type="checkbox" checked="true" id="overlapping" onchange="changeOverlappingOption(this.checked)">
+          </div>
         </div>
       </div>
       <div id="infos" style="position: absolute; bottom: 0px; padding: 10px;">
