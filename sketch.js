@@ -1,11 +1,14 @@
 let circleQty = 100;
 let bigCircleSize = 200;
 let smallCircleSize = 2;
+let marginCircleSize = 4;
 let bigCircleCenterX;
 let bigCircleCenterY;
 let relativeSize = 1;
-let randomness = 8;
+let randomness = 6;
 let currentPalette = 0;
+
+let circles = []
 
 let colorPalette = [
   ["#FFFFFF"],
@@ -35,6 +38,8 @@ let colorPalette = [
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
+  bigCircleCenterX = width/2;
+  bigCircleCenterY = height/2;
   createUIPalette();
   changeRelativeSize(1);
   runDrawFunc();
@@ -65,15 +70,17 @@ function windowResized() {
 }
 
 function runDrawFunc(){
-  drawCirclesInGrid();
+  bigCircleCenterX = width/2;
+  bigCircleCenterY = height/2;
+  //drawCirclesInGrid();
+  drawCirclePacking();
   updateInfos();
 }
 
 function drawCirclesInGrid(){
   circleQty = 0;
   background(0);
-  bigCircleCenterX = width/2;
-  bigCircleCenterY = height/2;
+
   //circle(bigCircleCenterX,bigCircleCenterY,bigCircleSize);
   let relBigCircleSize = bigCircleSize * relativeSize;
   let relSmallCircleSize = smallCircleSize * relativeSize;
@@ -84,14 +91,70 @@ function drawCirclesInGrid(){
     for(let currentY = bigCircleCenterY-relBigCircleSize/2; currentY<height; currentY = currentY+relSmallCircleSize*2) {
       if(dist(currentX,currentY,bigCircleCenterX,bigCircleCenterY) < relBigCircleSize/2){
         //circle(currentX,currentY,2);
-        let a = new CircleS(currentX+random(0,relRandomness),currentY+random(0,relRandomness),relSmallCircleSize*2);
+        let currentCircle = new CircleS(currentX+random(0,relRandomness),currentY+random(0,relRandomness),relSmallCircleSize);
         let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
-        a.color(color.levels[0],color.levels[1],color.levels[2]);
-        a.show();
+        currentCircle.color(color.levels[0],color.levels[1],color.levels[2]);
+        currentCircle.show();
         circleQty++;
       }
     }
   }
+}
+
+function drawCirclePacking(){
+  circles = [];
+  circleQty = 0;
+  background(0);
+  let relBigCircleSize = bigCircleSize * relativeSize;
+  let relSmallCircleSize = smallCircleSize * relativeSize;
+  let relRandomness = randomness * relativeSize;
+  noStroke();
+  fill(0);
+
+  let failTimesLimit = 20;
+  let currentTimeFailed = failTimesLimit;
+  let randomPoint;
+  while(currentTimeFailed>0){
+    randomPoint = getRandomPointInsideCircle();
+    
+
+    if(circles.length == 0 || isEnoughSpaceInCircles(randomPoint)){
+      let currentCircle = new CircleS(randomPoint.x,randomPoint.y,relSmallCircleSize);
+      currentTimeFailed = failTimesLimit;
+      circleQty++;
+      let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
+      currentCircle.color(color.levels[0],color.levels[1],color.levels[2]);
+      currentCircle.show();
+      circles.push(currentCircle);
+    } else {
+      currentTimeFailed--;
+    }
+  }
+}
+
+function isEnoughSpaceInCircles(point){
+  let isEnoughSpace = true;
+  for(let i=0; i<circles.length; i++){
+    if(dist(point.x, point.y, circles[i].x, circles[i].y) < smallCircleSize * relativeSize + marginCircleSize * relativeSize){
+      return false;
+    }
+  }
+  return isEnoughSpace;
+}
+
+function getRandomPointInsideCircle(){
+  let relBigCircleSize = (bigCircleSize/2) * relativeSize;
+
+  let angle = random(0, 2*PI);
+    
+  // https://programming.guide/random-point-within-circle.html
+  // we use square root of random for equal distribution of points from the center
+  r = relBigCircleSize * sqrt(random(0, 1));
+  
+  x = bigCircleCenterX + r * cos(angle);
+  y = bigCircleCenterY + r * sin(angle);
+
+  return createVector(x, y);
 }
 
 function updateInfos(){
