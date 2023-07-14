@@ -5,8 +5,10 @@ let bigCircleCenterX;
 let bigCircleCenterY;
 let relativeSize = 1;
 let randomness = 8;
+let currentPalette = 0;
 
 let colorPalette = [
+  ["#FFFFFF"],
   ["#FD2E5A","#FDE503","#1E99D2","#705791","#FE3509","#FD6E89","#7FB03B"],
   ["#B12B2B","#DAA12F","#2D6A86","#23143D","#246B53","#D1F0E0"],
   ["#F1EEEC","#25242A","#F2E5D3","#117989","#DBA799","#58AEBB"],
@@ -28,7 +30,7 @@ let colorPalette = [
   ["#24213D","#FB0060","#06AFD6","#DFA900"],
   ["#24213D","#06AFD6","#DFA900"],
   ["#0F0D05","#FBEFEA","#F00F0F"],
-  ["#A87438","#B0663B", "#A46E37"]
+  ["#A87438","#B0663B"] // "#A46E37"]
 ];
 
 function setup() {
@@ -49,6 +51,11 @@ function changeRelativeSize(size){
 
 function changeSmallCircleSize(size){
   smallCircleSize = size;
+  runDrawFunc();
+}
+
+function selectPalette(paletteNr){
+  currentPalette = paletteNr;
   runDrawFunc();
 }
 
@@ -78,7 +85,8 @@ function drawCirclesInGrid(){
       if(dist(currentX,currentY,bigCircleCenterX,bigCircleCenterY) < relBigCircleSize/2){
         //circle(currentX,currentY,2);
         let a = new CircleS(currentX+random(0,relRandomness),currentY+random(0,relRandomness),relSmallCircleSize*2);
-        a.color(255,255,255);
+        let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
+        a.color(color.levels[0],color.levels[1],color.levels[2]);
         a.show();
         circleQty++;
       }
@@ -98,6 +106,6 @@ function createUIPalette(){
     for(let j=0; j<colorPalette[i].length; j++){
       singlePalette += '<span style="background: '+colorPalette[i][j]+'; height: 14px; width: 14px;"></span>';
     }
-    paletteEl.innerHTML += '<div style="display: flex; height: 14px; margin-bottom:1px;">'+singlePalette+'</div>';
+    paletteEl.innerHTML += '<div id="singlePalette" onclick="selectPalette('+i+')" style="display: flex; height: 15px;">'+singlePalette+'</div>';
   }
 }
