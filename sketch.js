@@ -1,16 +1,17 @@
 let circleQty = 100;
-let bigCircleSize = 200;
-let smallCircleSize = 2;
-let marginCircleSize = 2;
-let bigCircleCenterX = 0;
-let bigCircleCenterY = 0;
 let zoomFactor = 1;
-let randomness = 3;
 let currentPalette = 0;
 let overlappingOption = true;
 let backgroundColor = 0;
 
-let circles = []
+const initVar = {
+  smallCircleSize: 2,
+  bigCircleSize: 200,
+}
+
+//let circles = []
+
+let bigCircle = new BigCircle(0,0,initVar.bigCircleSize, initVar.smallCircleSize);
 
 const State = {
   CirclePacking: "CirclePacking",
@@ -60,17 +61,17 @@ function changeZoomFactor(size){
 }
 
 function changeSmallCircleSize(size){
-  smallCircleSize = parseInt(size);
+  bigCircle.smallCircleSize = parseInt(size);
   runGenerateDrawFunc();
 }
 
 function changeCircleMargin(margin){
-  marginCircleSize = parseInt(margin);
+  bigCircle.marginCircleSize = parseInt(margin);
   runGenerateDrawFunc();
 }
 
 function changeGridRandomness(rand){
-  randomness = parseInt(rand);
+  bigCircle.randomness = parseInt(rand);
   runGenerateDrawFunc();
 }
 
@@ -83,7 +84,7 @@ function changeOverlappingOption(overlapping){
 
 function selectPalette(paletteNr){
   currentPalette = paletteNr;
-  changeRandomColorsFromPalette(colorPalette[currentPalette]);
+  bigCircle.changeRandomColorsFromPalette(colorPalette[currentPalette]);
   runDrawFunc();
 }
 
@@ -97,118 +98,31 @@ function runDrawFunc(){
   push();
     translate(width/2,height/2);
     scale(zoomFactor);
-    drawAllCircles();
+    bigCircle.show();
   pop();
 }
 
 function runGenerateDrawFunc(){
+  background(backgroundColor);
   if(currentState == State.CircleGrid){
-    generateCirclesInGrid(true);
+    push();
+      translate(width/2,height/2);
+      scale(zoomFactor);
+      bigCircle.generateCirclesInGrid(true);
+    pop();
   } else if(currentState == State.CirclePacking){
-    generateCirclePacking(true);
+    push();
+      translate(width/2,height/2);
+      scale(zoomFactor);
+      bigCircle.generateCirclePacking(true);
+    pop();
   }
   updateInfos();
 }
 
-function drawAllCircles(){
-  circles.forEach(element => {
-    element.show();
-  });
-}
-
-function changeRandomColorsFromPalette(palette){
-  let color;
-  circles.forEach(element => {
-    color = hexToRgb(palette[Math.floor(random(0,palette.length))]);
-    element.color(color.levels[0],color.levels[1],color.levels[2]);
-  });
-}
-
-function generateCirclesInGrid(drawAlso = true){
-  circles = [];
-  background(backgroundColor);
-
-  //circle(bigCircleCenterX,bigCircleCenterY,bigCircleSize);
-
-  noStroke();
-  fill(backgroundColor);
-  for(let currentX = -bigCircleSize/2; currentX<bigCircleSize/2; currentX = currentX+smallCircleSize) {
-    for(let currentY = -bigCircleSize/2; currentY<bigCircleSize/2; currentY = currentY+smallCircleSize) {
-      if(dist(0,0,currentX,currentY) < bigCircleSize/2){
-        let currentCircle = new CircleS(currentX+random(0,randomness)-randomness/2,currentY+random(0,randomness)-randomness/2,smallCircleSize);
-        let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
-        currentCircle.color(color.levels[0],color.levels[1],color.levels[2]);
-        if(drawAlso){
-          push();
-            translate(width/2,height/2);
-            scale(zoomFactor);
-            currentCircle.show();
-          pop();
-        }
-        circles.push(currentCircle);
-      }
-    }
-  }
-}
-
-function generateCirclePacking(drawAlso = true){
-  circles = [];
-  background(backgroundColor);
-
-  noStroke();
-  fill(0);
-
-  let failTimesLimit = 30;
-  let currentTimeFailed = failTimesLimit;
-  let randomPoint;
-  while(currentTimeFailed>0){
-    randomPoint = getRandomPointInsideCircle();
-
-    if(circles.length == 0 || isEnoughSpaceInCircles(randomPoint)){
-      let currentCircle = new CircleS(randomPoint.x,randomPoint.y,smallCircleSize);
-      currentTimeFailed = failTimesLimit;
-      let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
-      currentCircle.color(color.levels[0],color.levels[1],color.levels[2]);
-      if(drawAlso){
-        push();
-          translate(width/2,height/2);
-          scale(zoomFactor);
-          currentCircle.show();
-        pop();
-      }
-      circles.push(currentCircle);
-    } else {
-      currentTimeFailed--;
-    }
-  }
-}
-
-function isEnoughSpaceInCircles(point){
-  let isEnoughSpace = true;
-  for(let i=0; i<circles.length; i++){
-    if(dist(point.x, point.y, circles[i].x, circles[i].y) < smallCircleSize + marginCircleSize){
-      return false;
-    }
-  }
-  return isEnoughSpace;
-}
-
-function getRandomPointInsideCircle(){
-  let angle = random(0, 2*PI);
-    
-  // https://programming.guide/random-point-within-circle.html
-  // we use square root of random for equal distribution of points from the center
-  let r = bigCircleSize/2 * sqrt(random(0, 1));
-  
-  let x = r * cos(angle);
-  let y = r * sin(angle);
-
-  return createVector(x, y);
-}
-
 function updateInfos(){
-  document.querySelector("#circlesQty").innerHTML = circles.length;
-  document.querySelector("#circlesSize").innerHTML = smallCircleSize;
+  document.querySelector("#circlesQty").innerHTML = bigCircle.getCirclesQty();
+  document.querySelector("#circlesSize").innerHTML = bigCircle.smallCircleSize;
 }
 
 function createUIPalette(){
