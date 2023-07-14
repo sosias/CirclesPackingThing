@@ -1,11 +1,11 @@
 let circleQty = 100;
 let bigCircleSize = 200;
 let smallCircleSize = 2;
-let marginCircleSize = 4;
+let marginCircleSize = 2;
 let bigCircleCenterX;
 let bigCircleCenterY;
 let relativeSize = 1;
-let randomness = 6;
+let randomness = 3;
 let currentPalette = 0;
 let overlappingOption = true;
 
@@ -65,6 +65,11 @@ function changeCircleMargin(margin){
   runDrawFunc();
 }
 
+function changeGridRandomness(rand){
+  randomness = rand;
+  runDrawFunc();
+}
+
 function changeOverlappingOption(overlapping){
   overlappingOption = overlapping;
   runDrawFunc();
@@ -100,14 +105,14 @@ function drawCirclesInGrid(){
   //circle(bigCircleCenterX,bigCircleCenterY,bigCircleSize);
   let relBigCircleSize = bigCircleSize * relativeSize;
   let relSmallCircleSize = smallCircleSize * relativeSize;
-  let relRandomness = randomness * relativeSize;
+  let relRandomness = randomness * smallCircleSize * relativeSize;
   noStroke();
   fill(0);
   for(let currentX = bigCircleCenterX-relBigCircleSize/2; currentX<width; currentX = currentX+relSmallCircleSize*2) {
     for(let currentY = bigCircleCenterY-relBigCircleSize/2; currentY<height; currentY = currentY+relSmallCircleSize*2) {
       if(dist(currentX,currentY,bigCircleCenterX,bigCircleCenterY) < relBigCircleSize/2){
         //circle(currentX,currentY,2);
-        let currentCircle = new CircleS(currentX+random(0,relRandomness),currentY+random(0,relRandomness),relSmallCircleSize);
+        let currentCircle = new CircleS(currentX+random(0,relRandomness)-relRandomness/2,currentY+random(0,relRandomness)-relRandomness/2,relSmallCircleSize);
         let color = hexToRgb(colorPalette[currentPalette][Math.floor(random(0,colorPalette[currentPalette].length))]);
         currentCircle.color(color.levels[0],color.levels[1],color.levels[2]);
         currentCircle.show();
@@ -193,8 +198,14 @@ function changeUIState(){
   if(overlappingOption){
     document.querySelector("#cMargin").previousElementSibling.style.display = 'none';
     document.querySelector("#cMargin").style.display = 'none';
+
+    document.querySelector("#cRand").previousElementSibling.style.display = 'block';
+    document.querySelector("#cRand").style.display = 'block';
   } else {
     document.querySelector("#cMargin").previousElementSibling.style.display = 'block';
     document.querySelector("#cMargin").style.display = 'block';
+
+    document.querySelector("#cRand").previousElementSibling.style.display = 'none';
+    document.querySelector("#cRand").style.display = 'none';
   }
 }

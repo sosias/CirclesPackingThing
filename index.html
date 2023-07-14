@@ -28,9 +28,11 @@
             <label>circle size</label>
             <input type="range" min="2" max="12" value="2" id="cRadius" oninput="changeSmallCircleSize(this.value)">
             <label style="display: none;">circle margin</label>
-            <input style="display: none;" type="range" min="0" max="12" value="4" id="cMargin" oninput="changeCircleMargin(this.value)">
+            <input style="display: none;" type="range" min="0" max="12" value="2" id="cMargin" oninput="changeCircleMargin(this.value)">
             <label>overlapping</label>
             <input type="checkbox" checked="true" id="overlapping" onchange="changeOverlappingOption(this.checked)">
+            <label style="display: block;">randomness</label>
+            <input type="range" min="0" max="12" value="3" id="cRand" oninput="changeGridRandomness(this.value)">
           </div>
         </div>
       </div>
